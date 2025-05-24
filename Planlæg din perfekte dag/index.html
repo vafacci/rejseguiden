@@ -1,0 +1,284 @@
+<!-- WordPress Pakkeguide Widget -->
+<div class="pakkeguide-widget">
+    <style>
+        .pakkeguide-widget {
+            font-family: 'Greycliff-cf', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .pakkeguide-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            font-family: 'Greycliff-cf', sans-serif;
+            color: #000000;
+        }
+        .pakkeguide-destination {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: all 0.3s ease;
+        }
+        .pakkeguide-destination:hover {
+            background-color: #f8f9fa;
+            transform: translateY(-2px);
+        }
+        .pakkeguide-destination.selected {
+            background-color: #e3f2fd;
+            border-color: #2196f3;
+        }
+        .pakkeguide-destination img {
+            width: 200px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        .pakkeguide-info {
+            flex: 1;
+        }
+        .pakkeguide-list {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e3f2fd;
+            border-radius: 5px;
+            display: none;
+        }
+        .pakkeguide-button {
+            background-color: #1B9AAA;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block;
+            margin: 20px auto;
+        }
+
+        .pakkeguide-button:hover {
+            background-color: #1B9AAA; /* Ensure no background color change on hover */
+        }
+
+        .pakkeguide-button:focus,
+        .pakkeguide-button:active {
+            outline: none; /* Remove default outline on focus */
+            border: none; /* Remove any border on active/focus */
+            background-color: #1B9AAA; /* Ensure background color stays consistent on active/focus */
+        }
+
+        .pakkeguide-category {
+            margin-bottom: 15px;
+        }
+        .pakkeguide-category h3 {
+            font-family: 'Noka', sans-serif;
+            color: #000000;
+            margin-bottom: 10px;
+        }
+        .pakkeguide-category ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .pakkeguide-category li {
+            font-family: 'greycliff-cf '
+            margin: 5px 0 10px 0; /* Tilføjer 10px bundmargen for mere afstand */
+            padding-left: 20px;
+            position: relative;
+            color: #000000; /* Sæt listepunkt tekstfarve til sort */
+        }
+        .pakkeguide-category li:before {
+            content: "•";
+            color: #1B9AAA;
+            position: absolute;
+            left: 0;
+        }
+        @media (max-width: 600px) {
+            .pakkeguide-destination {
+                flex-direction: column;
+                text-align: center;
+            }
+            .pakkeguide-destination img {
+                width: 100%;
+                height: 200px;
+            }
+        }
+        .pakkeguide-category h3 {
+            font-family: 'greycliff-cf '
+            color: #000000;
+            margin-bottom: 10px;
+        }
+        .pakkeguide-widget h1 {
+            font-family: 'Noka', 
+            color: #000000;
+            margin-bottom: 10px;
+        }
+    </style>
+
+    <div class="pakkeguide-container">
+        <div id="pakkeguide-destinations">
+            <div class="pakkeguide-destination" onclick="selectPakkeguideDestination('spanien')">
+                <img src="https://images.unsplash.com/photo-1583422409516-2895a77efded?w=500" alt="Spanien">
+                <div class="pakkeguide-info">
+                    <h2>Spanien</h2>
+                    <p>Alt du skal huske at pakke til din rejse til Spanien</p>
+                </div>
+            </div>
+            <div class="pakkeguide-destination" onclick="selectPakkeguideDestination('thailand')">
+                <img src="https://images.unsplash.com/photo-1508009603885-50cf7c579365?w=500" alt="Thailand">
+                <div class="pakkeguide-info">
+                    <h2>Thailand</h2>
+                    <p>Alt du skal huske at pakke til din rejse til Thailand</p>
+                </div>
+            </div>
+        </div>
+
+        <button class="pakkeguide-button" onclick="generatePakkeguideList()">Vis pakkeliste</button>
+
+        <div id="pakkeguide-list" class="pakkeguide-list"></div>
+    </div>
+
+    <script>
+        let selectedPakkeguideCity = null;
+        const pakkeguideDestinations = {
+            spanien: {
+                tøj: [
+                    "Lette sommerklæder",
+                    "Komfortable gåsko",
+                    "Badetøj",
+                    "Let jakke til aftenen",
+                    "Solbriller"
+                ],
+                toiletartikler: [
+                    "Solscreme (høj faktor)",
+                    "Deodorant",
+                    "Grundlæggende toiletartikler",
+                    "Førstehjælpskasse"
+                ],
+                elektronik: [
+                    "Kamera",
+                    "Powerbank",
+                    "Universal stikadapter",
+                    "Telefonoplader"
+                ],
+                dokumenter: [
+                    "Pas",
+                    "Rejseforsikring",
+                    "Flybilletter",
+                    "Hotelreservationer",
+                    "Kreditkort"
+                ],
+                tips: [
+                    "Køb en Barcelona Card til offentlig transport",
+                    "Download offline kort",
+                    "Lær nogle spanske fraser",
+                    "Tjek vejrudsigten før afrejse"
+                ]
+            },
+            thailand: {
+                tøj: [
+                    "Lette, åndbare tøjer",
+                    "Komfortable sandaler",
+                    "Badetøj",
+                    "Let regnjakke",
+                    "Solhat"
+                ],
+                toiletartikler: [
+                    "Solscreme (høj faktor)",
+                    "Myggespray",
+                    "Deodorant",
+                    "Grundlæggende toiletartikler",
+                    "Førstehjælpskasse"
+                ],
+                elektronik: [
+                    "Kamera",
+                    "Powerbank",
+                    "Universal stikadapter",
+                    "Telefonoplader"
+                ],
+                dokumenter: [
+                    "Pas",
+                    "Rejseforsikring",
+                    "Flybilletter",
+                    "Hotelreservationer",
+                    "Kreditkort"
+                ],
+                tips: [
+                    "Køb en BTS SkyTrain kort",
+                    "Download offline kort",
+                    "Lær nogle thai fraser",
+                    "Tjek vejrudsigten før afrejse"
+                ]
+            }
+        };
+
+        function selectPakkeguideDestination(city) {
+            selectedPakkeguideCity = city;
+            // Fjern tidligere valg
+            document.querySelectorAll('.pakkeguide-destination').forEach(el => {
+                el.classList.remove('selected');
+            });
+            // Marker det valgte
+            event.currentTarget.classList.add('selected');
+        }
+
+        function generatePakkeguideList() {
+            if (!selectedPakkeguideCity) {
+                alert('Vælg venligst en destination først!');
+                return;
+            }
+
+            const list = pakkeguideDestinations[selectedPakkeguideCity];
+            // Funktion til at kapitalisere første bogstav i en streng
+            function capitalizeFirstLetter(string) {
+                return string.charAt(0).toUpperCase() + string.slice(1);
+            }
+            const listHTML = `
+                <h2>Pakkeguide til ${capitalizeFirstLetter(selectedPakkeguideCity)}</h2>
+
+                <div class="pakkeguide-category">
+                    <h3>Tøj</h3>
+                    <ul>
+                        ${list.tøj.map(item => `<li>${item}</li>`).join('')}
+                    </ul>
+                </div>
+
+                <div class="pakkeguide-category">
+                    <h3>Toiletartikler</h3>
+                    <ul>
+                        ${list.toiletartikler.map(item => `<li>${item}</li>`).join('')}
+                    </ul>
+                </div>
+
+                <div class="pakkeguide-category">
+                    <h3>Elektronik</h3>
+                    <ul>
+                        ${list.elektronik.map(item => `<li>${item}</li>`).join('')}
+                    </ul>
+                </div>
+
+                <div class="pakkeguide-category">
+                    <h3>Dokumenter</h3>
+                    <ul>
+                        ${list.dokumenter.map(item => `<li>${item}</li>`).join('')}
+                    </ul>
+                </div>
+
+                <div class="pakkeguide-category">
+                    <h3>Tips</h3>
+                    <ul>
+                        ${list.tips.map(item => `<li>${item}</li>`).join('')}
+                    </ul>
+                </div>
+            `;
+
+            document.getElementById('pakkeguide-list').innerHTML = listHTML;
+            document.getElementById('pakkeguide-list').style.display = 'block';
+        }
+    </script>
+</div>

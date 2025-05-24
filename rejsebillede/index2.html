@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perfekte Rejsebilleder</title>
+  <link rel="stylesheet" href="style2.css">
+</head>
+<body>
+  <h1>📸 Lær at tage det perfekte rejsebillede</h1>
+
+  <section class="before-after">
+    <h2>Før & Efter</h2>
+    <div class="image-compare">
+      <img src="images/bad.jpg" alt="Dårligt billede">
+      <img src="images/good.jpg" alt="Godt billede">
+      <div class="slider"></div>
+    </div>
+    <p>Træk i skyderen for at se forskellen.</p>
+  </section>
+
+  <section class="tips">
+    <h2>3 hurtige fototips:</h2>
+    <ul>
+      <li><strong>Gylne time:</strong> Tag billeder morgen/aften – lyset er blødere og mere flatterende.</li>
+      <li><strong>Regel om tredjedele:</strong> Undgå at placere motivet i midten. Del billedet i tredjedele og placer det vigtige element ved skæringspunkterne.</li>
+      <li><strong>Dybde:</strong> Brug forgrund eller baggrund til at skabe dybde og gøre billedet mere interessant.</li>
+    </ul>
+  </section>
+
+  <section class="quiz">
+    <h2>Quiz: Hvilket billede er bedst?</h2>
+    <div class="quiz-images">
+      <img src="images/bad.jpg" alt="Quiz billede A" onclick="checkAnswer('A')">
+      <img src="images/good.jpg" alt="Quiz billede B" onclick="checkAnswer('B')">
+    </div>
+    <p id="quiz-result"></p>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>
