@@ -1,0 +1,206 @@
+<!-- Jeg laver styling på HTML dokumentet for at holde det hele samlet -->
+<style>
+
+    .quiz-container {
+      max-width: 600px;
+      margin: 30px auto;
+      font-family: Noka;
+      padding: 20px;
+      border: 2px solid #084887;
+      border-radius: 12px;
+      background: #fff;
+    }
+  
+    .progress-bar-container {
+      background: #ddd;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 20px;
+      height: 16px;
+    }
+  
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: #084887;
+      transition: width 0.4s ease;
+    }
+  
+    .question {
+      font-size: 1.1em;
+      margin: 20px 0 10px;
+    }
+  
+    .options button {
+      display: block;
+      width: 100%;
+      margin: 8px 0;
+      padding: 10px;
+      font-size: 1em;
+      border: 2px solid #084887;
+      border-radius: 8px;
+      cursor: pointer;
+      background: #f9f9f9;
+      transition: background 0.3s;
+    }
+  
+    .options button:hover {
+      background: #26B6C9;
+      color: #fff;
+    }
+  
+    .result {
+      font-weight: bold;
+      text-align: center;
+      margin-top: 20px;
+    }
+  
+    .next-btn {
+      margin-top: 20px;
+      display: block;
+      background: #084887 !important;
+      color: white;
+      padding: 10px 20px;
+      font-size: 1em;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  
+    .next-btn:hover {
+      background: #26B6C9;
+    }
+    
+    button{
+      color: black;
+      font-weight: 400;
+  }
+
+  p{
+    font-family: Greycliff CF;
+  }
+  </style>
+  
+  <!-- HTML strukturen for selve quiz + progress baren-->
+  <div class="quiz-container">
+      
+       <p><em>Test dig selv: Har du forstået Thailand?</em></p>
+  
+    <!-- progress baren -->
+    <div class="progress-bar-container">
+      <div class="progress-bar-fill" id="progressBar"></div>
+    </div>
+  
+    <!-- quizzen -->
+    <div id="quiz"></div>
+  
+    <!-- "næste" knap -->
+    <button class="next-btn" onclick="nextQuestion()">Næste</button>
+  
+    <!-- resultat -->
+    <div class="result" id="result"></div>
+  </div>
+  
+  <!-- js til selve quiz og progress baren -->
+  <script>
+    const quizData = [
+      {
+        question: "Hvad er kulturen i Thailand præget af?",
+        options: ["Kristendom", "Islam", "Buddhisme", "Det frie menneske"],
+        correct: 2 //man skriver correkt: 2 fordi at tallene går fra 0-3. Derfor vil 2 rent faktisk betyde nr. 3 svar.
+      },
+
+      {
+        question: "Hvilken app er særligt vigtig på rejsen?",
+        options: ["Rejsekortet", "Grab", "Google Chrome", "Instagram"],
+        correct: 1
+      },
+
+      {
+        question: "Skal du bruge visum på rejsen?",
+        options: ["Ja, man skal altid have visum", "Nej, man skal aldrig have visum", "Man kan være visumfri i op til 30 dage", "Man kan være visumfri i op til 7 dage"],
+        correct: 2
+      },
+
+      {
+        question: "Hvordan siger man hej på Thailandsk?",
+        options: ["Sawasdee", "Khob chun", "Chan chue", "Koh Samui"],
+        correct: 0
+      },
+
+      {
+        question: "Hvad hedder valutaen i Thailand?",
+        options: ["Ringgit", "Baht", "Rupiah", "Dong"],
+        correct: 1
+      }
+    ];
+  
+    let currentQuestion = 0;
+    let score = 0;
+  
+    // vis det nuværende spørgsmål og progress baren
+    function showQuestion() {
+      const quizEl = document.getElementById("quiz");
+      const q = quizData[currentQuestion];
+  
+      quizEl.innerHTML = `
+        <div class="question">${q.question}</div>
+        <div class="options">
+          ${q.options.map((opt, i) =>
+            `<button onclick="checkAnswer(${i})">${opt}</button>`
+          ).join('')}
+        </div>
+      `;
+  
+      document.getElementById("result").textContent = "";
+  
+      updateProgressBar();
+    }
+  
+    // js tjekker om svaret er korrekt eller forkert
+    function checkAnswer(selected) {
+      const correct = quizData[currentQuestion].correct;
+      const resultEl = document.getElementById("result");
+  
+      if (selected === correct) {
+        resultEl.textContent = "Korrekt!";
+        resultEl.style.color = "green";
+        score++;
+      } else {
+        resultEl.textContent = "Forkert!";
+        resultEl.style.color = "red";
+      }
+  
+      // fjerner mulighed for at trykke på knapper efter man har svaret
+      const buttons = document.querySelectorAll(".options button");
+      buttons.forEach(btn => btn.disabled = true);
+    }
+  
+    // viser næste spørgsmål - ellers ens endelige score hvis man er færdig.
+    function nextQuestion() {
+      currentQuestion++;
+  
+      if (currentQuestion < quizData.length) {
+        showQuestion();
+      } else {
+        document.getElementById("quiz").innerHTML = `
+          <div class="question">Du fik ${score} ud af ${quizData.length} rigtige.</div>
+        `;
+        document.querySelector(".next-btn").style.display = "none";
+        document.getElementById("progressBar").style.width = "100%";
+        document.getElementById("result").textContent = "";
+      }
+    }
+  
+    // progress barens vidde opdateres 
+    function updateProgressBar() {
+      const progress = ((currentQuestion) / quizData.length) * 100;
+      document.getElementById("progressBar").style.width = progress + "%";
+    }
+  
+    // quizzen starter når siden åbnes
+    showQuestion();
+  </script>
+  
