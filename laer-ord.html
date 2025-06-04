@@ -1,0 +1,127 @@
+<!--styling på html dokumentet for at gøre det nemmere -->
+<style>
+    /* container box styling */
+    .table-container {
+      padding: 20px;
+      border-radius: 8px;
+      border: 2px solid #084887;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      background: #fff;
+      max-width: 700px;
+      margin: 0 auto;
+      font-family: Greycliff CF;
+      font-weight: 500;
+    }
+  
+    /* tabel layout */
+    .phrase-table {
+      width: 100%;
+      margin-top: 10px;
+    }
+  
+    /* header og tabel spacing */
+    .phrase-table th, .phrase-table td {
+      border-bottom: 1px solid #084887;
+      padding: 12px 10px;
+      text-align: left;
+    }
+  
+    /* afspil knap centreret */
+    .phrase-table td:last-child {
+      text-align: center;
+    }
+  
+    /* styling af knap */
+    .listen-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.2em;
+      border-radius: 8px;
+    }
+  
+    .listen-btn:hover {
+      background: #26B6C9;
+    }
+    
+    .listen-btn:focus {
+    outline: none;
+    background: #26B6C9;
+        
+    } 
+    
+    button:hover{
+        background:#26B6C9;
+    }
+    
+  </style>
+  
+  <!-- HTML layout -->
+  <div class="table-container">
+
+    <p><em>Test dig selv: Kan du  sige det rigtigt?</em></p>
+  
+    <!-- tabel -->
+    <table class="phrase-table">
+      <thead>
+        <tr>
+          <th>Sætning (Thai)</th>
+          <th>Betydning (Dansk)</th>
+          <th>Lyt</th>
+        </tr>
+      </thead>
+      <tbody>
+       
+
+        <tr>
+          <td>สวัสดี (Sawasdee)</td>
+          <td>Hej</td>
+          <td>
+            <!-- afspil hej på thai -->
+            <button class="listen-btn" onclick="document.getElementById('audio1').play()">🔊</button>
+            <audio id="audio1" src="https://www.akldesigns.dk/wp-content/uploads/2025/05/hej.mp3"></audio>
+          </td>
+        </tr>
+  
+
+        <tr>
+          <td>ขอบคุณ (Khob khun)</td>
+          <td>Tak</td>
+          <td>
+            <button class="listen-btn" onclick="document.getElementById('audio2').play()">🔊</button>
+            <audio id="audio2" src="https://www.akldesigns.dk/wp-content/uploads/2025/05/tak.mp3"></audio>
+          </td>
+        </tr>
+  
+
+        <tr>
+          <td>ฉันชื่อ... (Chan chue...)</td>
+          <td>Jeg hedder...</td>
+          <td>
+            <button class="listen-btn" onclick="document.getElementById('audio3').play()">🔊</button>
+            <audio id="audio3" src="https://www.akldesigns.dk/wp-content/uploads/2025/05/jeghedder.mp3"></audio>
+          </td>
+        </tr>
+
+        <tr>
+          <td>ขอเบียร์หนึ่งที่ (Khor bia neung tee)</td>
+          <td>En øl, tak</td>
+          <td>
+            <button class="listen-btn" onclick="document.getElementById('audio4').play()">🔊</button>
+            <audio id="audio4" src="https://www.akldesigns.dk/wp-content/uploads/2025/05/en-ol-tak.mp3"></audio>
+          </td>
+        </tr>
+  
+
+        <tr>
+          <td>ชายหาดอยู่ที่ไหน? (Chai haad yoo tee nai?)</td>
+          <td>Hvor er stranden?</td>
+          <td>
+            <button class="listen-btn" onclick="document.getElementById('audio5').play()">🔊</button>
+            <audio id="audio5" src="https://www.akldesigns.dk/wp-content/uploads/2025/05/hvor-er-stranden.mp3"></audio>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
