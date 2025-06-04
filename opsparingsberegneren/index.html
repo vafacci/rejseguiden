@@ -1,0 +1,187 @@
+
+<style>
+    /* Container der indeholder hele modellen */
+    .savings-container {
+      max-width: 600px;
+      margin: auto;
+      font-family: 'Greycliff CF', sans-serif;
+      color: #000000;
+      padding: 15px;
+      border: 2px solid #084887;
+      border-radius: 8px;
+      background-color: #fff;
+    }
+  
+    /* Styling af felttitler (label) */
+    .savings-container label {
+      font-size: 1rem;
+      display: block;
+      margin-top: 20px;
+    }
+  
+    /* Inputfelter til beløb og måneder */
+    .savings-container input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      background: #fff;
+      font-family: 'Greycliff CF', sans-serif;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+  
+    /* Boks til at vise resultater */
+    .savings-box,
+    .savings-destination {
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 20px;
+      border: 1px solid #dcdcdc;
+      font-size: 1rem;
+    }
+  
+    .savings-box {
+      background: #f2f2f2;
+    }
+  
+    .savings-destination {
+      background: #f2f2f2;
+    }
+  
+    /* Styling af tekst i resultatbokse */
+    .savings-box p,
+    .savings-destination p {
+      margin: 5px 0;
+      font-size: 1.1rem;
+    }
+  
+    /* Styling af knap til at generere PDF */
+    .savings-button {
+      background-color: #FA7F21;
+      color: white;
+      border: none;
+      padding: 12px 12px;
+      border-radius: 8px;
+      margin-top: 20px;
+      cursor: pointer;
+      font-family: 'Greycliff CF', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      width: 100%;
+      max-width: 250px;
+    }
+  
+    .savings-button:hover {
+      background-color: #FA7F21;
+    }
+  
+    /* Responsiv tilpasning på mobil */
+    @media (max-width: 480px) {
+      .savings-container label {
+        font-size: 0.95rem;
+      }
+      .savings-container input {
+        padding: 10px;
+        font-size: 0.95rem;
+      }
+      .savings-box p,
+      .savings-destination p {
+        font-size: 1rem;
+      }
+      .savings-button {
+        font-size: 0.95rem;
+        padding: 10px;
+      }
+    }
+  </style>
+  
+  <!-- 📅 HTML: Strukturen af opsparingsberegneren -->
+  <div class="savings-container">
+    <!-- Input: Månedligt beløb -->
+    <label for="monthly"><b> Hvor meget kan du spare op hver måned? (DKK)</b></label>
+    <input type="number" id="monthly" placeholder="f.eks. 500">
+  
+    <!-- Input: Antal måneder -->
+    <label for="months"><b> Hvor mange måneder vil du spare op?</b></label>
+    <input type="number" id="months" placeholder="f.eks. 6">
+  
+    <!-- Resultat: Samlet opsparing -->
+    <div class="savings-box">
+      <b>Du vil have sparet op:</b>
+      <p><span id="result">0</span> DKK</p>
+    </div>
+  
+    <!-- Forslag til destination baseret på opsparing -->
+    <div class="savings-destination">
+      <b>Med det beløb kan du rejse til:</b>
+      <p id="destination">–</p>
+    </div>
+  
+    <!-- Knap til at hente resultatet som PDF -->
+    <button onclick="downloadPDF()" class="savings-button">
+      Download som PDF
+    </button>
+  </div>
+  
+  <!-- 📂 EKSTERN JS: PDF-generator via jsPDF CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  
+  <!-- 🔧 SCRIPT: Funktionalitet for udregning og PDF -->
+  <script>
+    // Referencer til HTML-elementer
+    const monthly = document.getElementById('monthly');
+    const months = document.getElementById('months');
+    const result = document.getElementById('result');
+    const destination = document.getElementById('destination');
+  
+    // Funktion der regner det samlede beløb og opdaterer visningen
+    function updateSavings() {
+      const m = parseInt(monthly.value) || 0;
+      const n = parseInt(months.value) || 0;
+      const total = m * n;
+  
+      result.textContent = total;
+  
+      // Forslag til destination ud fra budget
+      if (total === 0) {
+        destination.textContent = "–";
+      } else if (total <= 3000) {
+        destination.textContent = "En hyggelig weekend i Danmark 🇩🇰";
+      } else if (total <= 7000) {
+        destination.textContent = "En storbytur i Europa ✈️";
+      } else {
+        destination.textContent = "En længere rejse til Asien 🌴";
+      }
+    }
+  
+    // Opdater når der skrives i felterne
+    monthly.addEventListener('input', updateSavings);
+    months.addEventListener('input', updateSavings);
+  
+    // Vis startværdi
+    updateSavings();
+  
+    // Funktion til at downloade opsparingsplan som PDF
+    function downloadPDF() {
+      const m = parseInt(monthly.value) || 0;
+      const n = parseInt(months.value) || 0;
+      const total = m * n;
+      const dest = destination.textContent;
+  
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+  
+      doc.setFont("Helvetica");
+      doc.setFontSize(16);
+      doc.text("🧾 Din opsparingsplan", 20, 20);
+      doc.setFontSize(12);
+      doc.text(`Månedlig opsparing: ${m} DKK`, 20, 40);
+      doc.text(`Antal måneder: ${n}`, 20, 50);
+      doc.text(`Total opsparing: ${total} DKK`, 20, 60);
+      doc.text(`Rejseforslag: ${dest}`, 20, 70);
+  
+      doc.save("opsparingsplan.pdf");
+    }
+  </script>
